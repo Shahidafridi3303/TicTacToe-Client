@@ -13,15 +13,22 @@ public enum UIState
 public class LoginManager : MonoBehaviour
 {
     public GameObject loginPanel;
-    public GameObject gameRoomPanel; // Replace lobbyPanel with gameRoomPanel
+    public GameObject gameRoomPanel;
+    public GameObject ticTacToePanel;
+
     public TMP_InputField usernameField;
     public TMP_InputField passwordField;
+    public TMP_InputField roomNameField;
     public TextMeshProUGUI feedbackText;
+    public TextMeshProUGUI roomStatusText;
     public TMP_Dropdown accountDropdown;
-    public TMP_InputField roomNameField; // Input for room name
-    public TextMeshProUGUI roomStatusText; // Text for room status
+    public TextMeshProUGUI turnStatusText;
+    public TextMeshProUGUI gameResultText;
 
+    public Button[] ticTacToeButtons; // 9 buttons for the Tic Tac Toe grid
     private string currentRoomName = "";
+    private bool isPlayerTurn = false; // Track if it's this player's turn
+    private string playerSymbol = ""; // "X" or "O"
 
     // Local storage for account passwords
     private Dictionary<string, string> accountPasswordMap = new Dictionary<string, string>();
@@ -34,7 +41,13 @@ public class LoginManager : MonoBehaviour
     public void SetUIState(UIState state)
     {
         loginPanel.SetActive(state == UIState.Login);
-        gameRoomPanel.SetActive(state == UIState.GameRoomWaiting || state == UIState.GameRoomPlaying);
+        gameRoomPanel.SetActive(state == UIState.GameRoomWaiting);
+        ticTacToePanel.SetActive(state == UIState.GameRoomPlaying);
+    }
+
+    public void OnLeaveGameButtonPressed()
+    {
+        SetUIState(UIState.Login); // Transition back to the Login Panel
     }
 
     public void OnLoginButtonPressed()
@@ -185,5 +198,45 @@ public class LoginManager : MonoBehaviour
             passwordField.text = "";
             Debug.Log("Resetting fields as 'Select Account' was chosen.");
         }
+    }
+
+    public void OnTicTacToeCellPressed(int cellIndex)
+    {
+        if (!isPlayerTurn) return;
+
+        // Mark the button as clicked and disable it
+        ticTacToeButtons[cellIndex].GetComponentInChildren<TextMeshProUGUI>().text = playerSymbol;
+        ticTacToeButtons[cellIndex].interactable = false;
+
+        // Send the move to the server
+        NetworkClientProcessing.SendMessageToServer($"7,{currentRoomName},{cellIndex},{playerSymbol}", TransportPipeline.ReliableAndInOrder);
+        isPlayerTurn = false;
+        turnStatusText.text = "Waiting for opponent...";
+    }
+
+    public void UpdateGameStatus(string turnPlayer)
+    {
+        isPlayerTurn = turnPlayer == playerSymbol;
+        turnStatusText.text = isPlayerTurn ? "Your Turn" : "Opponent's Turn";
+    }
+
+    public void DisplayGameResult(string result)
+    {
+        gameResultText.text = result;
+        foreach (Button button in ticTacToeButtons)
+        {
+            button.interactable = false; // Disable all buttons after game ends
+        }
+    }
+
+    public void ResetTicTacToeBoard()
+    {
+        foreach (Button button in ticTacToeButtons)
+        {
+            button.GetComponentInChildren<TextMeshProUGUI>().text = "";
+            button.interactable = true;
+        }
+        gameResultText.text = "";
+        turnStatusText.text = "";
     }
 }

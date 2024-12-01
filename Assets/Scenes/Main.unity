@@ -2260,7 +2260,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1239232955}
         m_TargetAssemblyTypeName: LoginManager, Assembly-CSharp
-        m_MethodName: OnCreateOrJoinRoomPressed
+        m_MethodName: OnLeaveGameButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3731,12 +3731,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loginPanel: {fileID: 385422701}
   gameRoomPanel: {fileID: 1117360544}
+  ticTacToePanel: {fileID: 1150388604}
   usernameField: {fileID: 1991476770}
   passwordField: {fileID: 1770484597}
-  feedbackText: {fileID: 1916560472}
-  accountDropdown: {fileID: 1113541445}
   roomNameField: {fileID: 1088446295}
+  feedbackText: {fileID: 1916560472}
   roomStatusText: {fileID: 330769427}
+  accountDropdown: {fileID: 1113541445}
+  turnStatusText: {fileID: 1890955828}
+  gameResultText: {fileID: 1402993331}
+  ticTacToeButtons:
+  - {fileID: 3516692305914566194}
+  - {fileID: 4943699389684028768}
+  - {fileID: 6011099162999196988}
+  - {fileID: 3995961547966984297}
+  - {fileID: 3684221297277990595}
+  - {fileID: 6047899543489111884}
+  - {fileID: 3689703085361631598}
+  - {fileID: 5758243447489340417}
+  - {fileID: 4845486053708328017}
 --- !u!4 &1239232956
 Transform:
   m_ObjectHideFlags: 0
@@ -6117,7 +6130,7 @@ GameObject:
   - component: {fileID: 8407340639744054244}
   - component: {fileID: 5758243447489340417}
   m_Layer: 5
-  m_Name: Cell21
+  m_Name: Cell8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6292,7 +6305,7 @@ GameObject:
   - component: {fileID: 3684917664656223020}
   - component: {fileID: 3995961547966984297}
   m_Layer: 5
-  m_Name: Cell10
+  m_Name: Cell4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6423,7 +6436,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7143936199602553688}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1239232955}
+        m_TargetAssemblyTypeName: LoginManager, Assembly-CSharp
+        m_MethodName: OnTicTacToeCellPressed
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &3684221297277990595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6467,7 +6492,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6938750576243739951}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1239232955}
+        m_TargetAssemblyTypeName: LoginManager, Assembly-CSharp
+        m_MethodName: OnTicTacToeCellPressed
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &3684917664656223020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6541,7 +6578,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1447743312423207715}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1239232955}
+        m_TargetAssemblyTypeName: LoginManager, Assembly-CSharp
+        m_MethodName: OnTicTacToeCellPressed
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 6
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &3742736203484264611
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6612,7 +6661,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3684917664656223020}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1239232955}
+        m_TargetAssemblyTypeName: LoginManager, Assembly-CSharp
+        m_MethodName: OnTicTacToeCellPressed
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4208710087501713966
 GameObject:
   m_ObjectHideFlags: 0
@@ -6626,7 +6687,7 @@ GameObject:
   - component: {fileID: 8319916708619427045}
   - component: {fileID: 6011099162999196988}
   m_Layer: 5
-  m_Name: Cell02
+  m_Name: Cell3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6645,7 +6706,7 @@ GameObject:
   - component: {fileID: 1775855011381128396}
   - component: {fileID: 4943699389684028768}
   m_Layer: 5
-  m_Name: Cell01
+  m_Name: Cell2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6713,7 +6774,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1123508796667940580}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1239232955}
+        m_TargetAssemblyTypeName: LoginManager, Assembly-CSharp
+        m_MethodName: OnTicTacToeCellPressed
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 8
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4943699389684028768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6757,7 +6830,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1775855011381128396}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1239232955}
+        m_TargetAssemblyTypeName: LoginManager, Assembly-CSharp
+        m_MethodName: OnTicTacToeCellPressed
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5085312941224655777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6795,7 +6880,7 @@ GameObject:
   - component: {fileID: 1123508796667940580}
   - component: {fileID: 4845486053708328017}
   m_Layer: 5
-  m_Name: Cell22
+  m_Name: Cell9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6852,7 +6937,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8407340639744054244}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1239232955}
+        m_TargetAssemblyTypeName: LoginManager, Assembly-CSharp
+        m_MethodName: OnTicTacToeCellPressed
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 7
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!224 &5983094669038883123
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6938,7 +7035,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8319916708619427045}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1239232955}
+        m_TargetAssemblyTypeName: LoginManager, Assembly-CSharp
+        m_MethodName: OnTicTacToeCellPressed
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &6047899543489111884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6982,7 +7091,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7697079486119422477}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1239232955}
+        m_TargetAssemblyTypeName: LoginManager, Assembly-CSharp
+        m_MethodName: OnTicTacToeCellPressed
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 5
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &6120711861655993909
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7028,7 +7149,7 @@ GameObject:
   - component: {fileID: 7143936199602553688}
   - component: {fileID: 3516692305914566194}
   m_Layer: 5
-  m_Name: Cell00
+  m_Name: Cell1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7066,7 +7187,7 @@ GameObject:
   - component: {fileID: 7697079486119422477}
   - component: {fileID: 6047899543489111884}
   m_Layer: 5
-  m_Name: Cell12
+  m_Name: Cell6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7263,7 +7384,7 @@ GameObject:
   - component: {fileID: 1447743312423207715}
   - component: {fileID: 3689703085361631598}
   m_Layer: 5
-  m_Name: Cell20
+  m_Name: Cell7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7333,7 +7454,7 @@ GameObject:
   - component: {fileID: 6938750576243739951}
   - component: {fileID: 3684221297277990595}
   m_Layer: 5
-  m_Name: Cell11
+  m_Name: Cell5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

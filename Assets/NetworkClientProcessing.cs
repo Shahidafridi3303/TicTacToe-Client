@@ -169,6 +169,17 @@ static public class NetworkClientProcessing
     #endregion
 }
 
+public static class ClientToServerSignifiers
+{
+    public const int CreateAccount = 1;
+    public const int Login = 2;
+    public const int DeleteAccount = 3; // New signifier for deleting accounts
+
+    public const int CreateOrJoinGameRoom = 4;
+    public const int LeaveGameRoom = 5;
+    public const int SendMessageToOpponent = 6;
+}
+
 public static class ServerToClientSignifiers
 {
     public const int AccountCreated = 1;
@@ -182,4 +193,7 @@ public static class ServerToClientSignifiers
     public const int GameRoomCreatedOrJoined = 8;
     public const int StartGame = 9;
     public const int OpponentMessage = 10;
+
+    public const int TicTacToeMove = 11;
+    public const int GameResult = 12;
 }
