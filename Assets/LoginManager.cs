@@ -30,6 +30,9 @@ public class LoginManager : MonoBehaviour
     private bool isPlayerTurn = false; // Track if it's this player's turn
     private string playerSymbol = ""; // "X" or "O"
 
+    public Sprite xSprite;
+    public Sprite oSprite;
+
     // Local storage for account passwords
     private Dictionary<string, string> accountPasswordMap = new Dictionary<string, string>();
 
@@ -117,8 +120,17 @@ public class LoginManager : MonoBehaviour
     public void StartGame()
     {
         roomStatusText.text = "Game Started! You can now play with your opponent.";
+
+        // Assign symbols based on player order (Player 1 gets "X", Player 2 gets "O")
+        playerSymbol = currentRoomName == "Player1" ? "X" : "O";
+
+        // Determine the initial turn
+        isPlayerTurn = playerSymbol == "X";
+        turnStatusText.text = isPlayerTurn ? "Your Turn" : "Opponent's Turn";
+
         SetUIState(UIState.GameRoomPlaying);
     }
+
 
     public void OnDeleteAccountButtonPressed()
     {
@@ -159,37 +171,28 @@ public class LoginManager : MonoBehaviour
         accountNames.Insert(0, "Select Account"); // Add default "Select Account" option
         accountDropdown.AddOptions(accountNames); // Add new options
         accountDropdown.value = 0; // Reset dropdown to the default option
-
-        Debug.Log("Dropdown populated successfully.");
     }
 
     public void OnAccountSelected(int index)
     {
-        Debug.Log($"Dropdown selection changed. Passed index: {index}");
-
         // Fetch the actual selected index directly from the dropdown
         int selectedIndex = accountDropdown.value;
-        Debug.Log($"Dropdown actual selected index: {selectedIndex}");
 
         if (selectedIndex > 0) // Skip the default "Select Account" option
         {
             string selectedUsername = accountDropdown.options[selectedIndex].text;
-            Debug.Log($"Selected Username: {selectedUsername}");
 
             // Autofill username field
             usernameField.text = selectedUsername;
-            Debug.Log($"Username field updated with: {usernameField.text}");
 
             // Autofill password if available
             if (accountPasswordMap.ContainsKey(selectedUsername))
             {
                 passwordField.text = accountPasswordMap[selectedUsername];
-                Debug.Log($"Password field updated with: {passwordField.text}");
             }
             else
             {
                 passwordField.text = "";
-                Debug.Log($"Password field cleared for: {selectedUsername}");
             }
         }
         else
@@ -202,23 +205,36 @@ public class LoginManager : MonoBehaviour
 
     public void OnTicTacToeCellPressed(int cellIndex)
     {
-        if (!isPlayerTurn) return;
+        if (!isPlayerTurn)
+        {
+            Debug.Log("Not your turn!");
+            return;
+        }
 
-        // Mark the button as clicked and disable it
-        ticTacToeButtons[cellIndex].GetComponentInChildren<TextMeshProUGUI>().text = playerSymbol;
+        // Get the button's Image component
+        Image cellImage = ticTacToeButtons[cellIndex].GetComponent<Image>();
+
+        // Set the sprite based on the player's symbol
+        cellImage.sprite = playerSymbol == "X" ? xSprite : oSprite;
         ticTacToeButtons[cellIndex].interactable = false;
 
         // Send the move to the server
+        Debug.Log($"Sending move: {playerSymbol} at cell {cellIndex}");
         NetworkClientProcessing.SendMessageToServer($"7,{currentRoomName},{cellIndex},{playerSymbol}", TransportPipeline.ReliableAndInOrder);
+
+        // Update the UI to show waiting state
         isPlayerTurn = false;
         turnStatusText.text = "Waiting for opponent...";
     }
 
-    public void UpdateGameStatus(string turnPlayer)
+    public void UpdateGameStatus(string turnPlayerSymbol)
     {
-        isPlayerTurn = turnPlayer == playerSymbol;
+        isPlayerTurn = turnPlayerSymbol == playerSymbol; // Check if it's this player's turn
         turnStatusText.text = isPlayerTurn ? "Your Turn" : "Opponent's Turn";
+        Debug.Log($"Turn updated: {turnStatusText.text}");
     }
+
+
 
     public void DisplayGameResult(string result)
     {
@@ -233,10 +249,11 @@ public class LoginManager : MonoBehaviour
     {
         foreach (Button button in ticTacToeButtons)
         {
-            button.GetComponentInChildren<TextMeshProUGUI>().text = "";
+            button.GetComponent<Image>().sprite = null; // Set back to a blank state
             button.interactable = true;
         }
         gameResultText.text = "";
         turnStatusText.text = "";
     }
+
 }
