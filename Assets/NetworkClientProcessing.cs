@@ -155,6 +155,19 @@ static public class NetworkClientProcessing
             int result = int.Parse(csv[1]);
             ticTacToeManager.ShowGameResult(result);
         }
+
+        else if (signifier == ServerToClientSignifiers.OpponentMessage)
+        {
+            string message = csv[1];
+            Debug.Log($"Message from opponent: {message}");
+
+            ChatManager chatManager = Object.FindObjectOfType<ChatManager>();
+            if (chatManager != null)
+            {
+                chatManager.DisplayIncomingMessage(message);
+            }
+        }
+
     }
 
     static public void SendMessageToServer(string msg, TransportPipeline pipeline)
