@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 static public class NetworkClientProcessing
 {
@@ -26,21 +25,6 @@ static public class NetworkClientProcessing
             string message = csv[1];
             Debug.Log($"Message from opponent: {message}");
         }
-        else if (signifier == ServerToClientSignifiers.TicTacToeMove) // Handle Tic Tac Toe move
-        {
-            string roomName = csv[1];
-            int cellIndex = int.Parse(csv[2]);
-            string symbol = csv[3];
-
-            // Determine which sprite to use
-            Sprite spriteToSet = symbol == "X" ? loginManager.xSprite : loginManager.oSprite;
-
-            // Update the button's image
-            Button targetButton = loginManager.ticTacToeButtons[cellIndex];
-            targetButton.GetComponent<Image>().sprite = spriteToSet;
-            targetButton.interactable = false; // Disable the button
-        }
-
         else if (signifier == ServerToClientSignifiers.AccountCreated)
         {
             loginManager.ShowFeedback("Account created successfully!");
@@ -98,6 +82,8 @@ static public class NetworkClientProcessing
                     }
                 }
 
+                Debug.Log($"Processed Accounts: {string.Join(", ", accounts)}");
+
                 if (loginManager != null)
                 {
                     loginManager.PopulateAccountDropdown(accounts, passwords);
@@ -122,13 +108,6 @@ static public class NetworkClientProcessing
         {
             string failedAccount = csv[1];
             loginManager.ShowFeedback($"Failed to delete account '{failedAccount}'.");
-        }
-        else if (signifier == 13) // Turn update
-        {
-            string roomName = csv[1];
-            string turnPlayerSymbol = csv[2];
-
-            loginManager.UpdateGameStatus(turnPlayerSymbol);
         }
     }
 
