@@ -31,7 +31,7 @@ static public class NetworkClientProcessing
 
             if (ticTacToeManager != null)
             {
-                ticTacToeManager.InitializePlayer(role, turn);
+                ticTacToeManager.InitializePlayer(role, turn, roomName); // Include roomName as the third argument
             }
 
             if (loginManager != null)
@@ -39,7 +39,6 @@ static public class NetworkClientProcessing
                 loginManager.StartGame(); // Activate the TicTacToe panel
             }
         }
-
 
         else if (signifier == ServerToClientSignifiers.OpponentMessage)
         {
@@ -134,9 +133,21 @@ static public class NetworkClientProcessing
             int y = int.Parse(csv[2]);
             int player = int.Parse(csv[3]);
 
+            Debug.Log($"Processing PlayerMove: x = {x}, y = {y}, player = {player}");
+
             if (ticTacToeManager != null)
             {
                 ticTacToeManager.UpdateCell(x, y, player);
+            }
+        }
+        else if (signifier == ServerToClientSignifiers.TurnUpdate)
+        {
+            int isPlayerTurn = int.Parse(csv[1]);
+            Debug.Log($"Processing TurnUpdate: IsPlayerTurn = {isPlayerTurn}");
+
+            if (ticTacToeManager != null)
+            {
+                ticTacToeManager.SetPlayerTurn(isPlayerTurn == 1);
             }
         }
         else if (signifier == ServerToClientSignifiers.GameResult)
@@ -232,4 +243,5 @@ public static class ServerToClientSignifiers
 
     public const int PlayerMove = 11; // Sent when a player makes a move
     public const int GameResult = 12; // Sent when the game ends
+    public const int TurnUpdate = 13; // New signifier for turn updates
 }

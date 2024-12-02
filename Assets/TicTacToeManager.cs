@@ -24,19 +24,25 @@ public class TicTacToeManager : MonoBehaviour
         }
     }
 
-    public void InitializePlayer(string role, int turn)
+    public void InitializePlayer(string role, int turn, string room)
     {
         playerID = (role == "X") ? 1 : 2;
         isPlayerTurn = (turn == 1); // First player's turn
+        roomName = room; // Assign room name
         UpdateTurnText();
     }
+
 
     public void UpdateCell(int x, int y, int player)
     {
         int index = x * 3 + y;
+        Debug.Log($"Updating cell at ({x}, {y}) for player {player}. Button index: {index}");
+
         buttons[index].image.sprite = (player == 1) ? xSprite : oSprite; // Update sprite
         buttons[index].interactable = false;
 
+        // Toggle turn indicator
+        isPlayerTurn = (player != playerID);
         UpdateTurnText();
     }
 
@@ -59,7 +65,11 @@ public class TicTacToeManager : MonoBehaviour
             int x = index / 3;
             int y = index % 3;
 
-            NetworkClientProcessing.SendMessageToServer($"11,{roomName},{x},{y}", TransportPipeline.ReliableAndInOrder);
+            // Debug to confirm room and move details
+            Debug.Log($"Sending move to server: Room {roomName}, x: {x}, y: {y}, playerID: {playerID}");
+
+            // Send the room name along with the move
+            NetworkClientProcessing.SendMessageToServer($"11,{roomName},{x},{y},{playerID}", TransportPipeline.ReliableAndInOrder);
 
             buttons[index].image.sprite = (playerID == 1) ? xSprite : oSprite;
             buttons[index].interactable = false;
@@ -73,6 +83,12 @@ public class TicTacToeManager : MonoBehaviour
         }
     }
 
+    public void SetPlayerTurn(bool isTurn)
+    {
+        Debug.Log($"Setting player turn: IsPlayerTurn = {isTurn}");
+        isPlayerTurn = isTurn;
+        UpdateTurnText();
+    }
 
     public void ShowGameResult(int result)
     {
