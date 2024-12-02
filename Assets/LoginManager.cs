@@ -21,6 +21,8 @@ public class LoginManager : MonoBehaviour
     public TMP_Dropdown accountDropdown;
     public TMP_InputField roomNameField; // Input for room name
     public TextMeshProUGUI roomStatusText; // Text for room status
+    public GameObject resultPanel; 
+    public TextMeshProUGUI resultPanelMessage; 
 
     private string currentRoomName = "";
 
@@ -96,10 +98,46 @@ public class LoginManager : MonoBehaviour
         if (!string.IsNullOrEmpty(currentRoomName))
         {
             Debug.Log($"Leaving room: {currentRoomName}");
+
+            // Notify the server about leaving the room
             NetworkClientProcessing.SendMessageToServer($"5,{currentRoomName}", TransportPipeline.ReliableAndInOrder);
-            currentRoomName = "";
-            SetUIState(UIState.Login); // Go back to login state
+            currentRoomName = ""; // Clear the current room locally
+
+            // Reset TicTacToePanel and ResultPanel
+            if (ticTacToePanel != null)
+            {
+                ticTacToePanel.SetActive(false); // Deactivate the game panel
+            }
+
+            if (resultPanel != null)
+            {
+                resultPanel.SetActive(false); // Deactivate the result panel
+            }
+
+            // Return to GameRoomPanel
+            SetUIState(UIState.GameRoomWaiting);
         }
+    }
+
+    public void OnPlayAgainButtonPressed()
+    {
+        Debug.Log("Play Again button pressed. Returning to GameRoom...");
+
+        // Deactivate the ResultPanel
+        if (resultPanel != null)
+        {
+            resultPanel.SetActive(false);
+        }
+
+        // Return to the GameRoomPanel
+        SetUIState(UIState.GameRoomWaiting);
+    }
+
+
+    public void OnQuitGameButtonPressed()
+    {
+        Debug.Log("Quit Game button pressed. Exiting application...");
+        Application.Quit(); // Quit the application
     }
 
     public void StartGame()

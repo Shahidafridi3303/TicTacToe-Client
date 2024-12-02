@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -112,8 +113,19 @@ public class TicTacToeManager : MonoBehaviour
         else
             resultText.text = "It's a Draw!";
 
-        Debug.Log("Game over. Preparing for a new game.");
-        StartNewGame(); // Reset the UI for a new game
+        StartCoroutine(DisplayResultPanel(result));
     }
 
+    private IEnumerator DisplayResultPanel(int result)
+    {
+        yield return new WaitForSeconds(1); // Wait for 1 second
+
+        // Activate ResultPanel via LoginManager
+        LoginManager loginManager = Object.FindObjectOfType<LoginManager>();
+        if (loginManager != null)
+        {
+            loginManager.resultPanel.SetActive(true);
+            loginManager.resultPanelMessage.text = resultText.text; // Show result
+        }
+    }
 }
