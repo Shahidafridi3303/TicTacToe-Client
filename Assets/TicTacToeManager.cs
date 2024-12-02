@@ -23,6 +23,19 @@ public class TicTacToeManager : MonoBehaviour
             buttons[i].onClick.AddListener(() => OnCellClicked(index));
         }
     }
+    public void StartNewGame()
+    {
+        roomName = ""; // Clear the previous room name
+        turnText.text = "Waiting for opponent..."; // Reset turn indicator
+        resultText.text = ""; // Clear the result text
+        foreach (Button button in buttons)
+        {
+            button.image.sprite = null; // Clear button sprites
+            button.interactable = true; // Enable buttons for new game
+        }
+        Debug.Log("Game UI reset for a new game.");
+    }
+
 
     public void InitializePlayer(string role, int turn, string room)
     {
@@ -98,5 +111,9 @@ public class TicTacToeManager : MonoBehaviour
             resultText.text = "Player 2 (O) Wins!";
         else
             resultText.text = "It's a Draw!";
+
+        Debug.Log("Game over. Preparing for a new game.");
+        StartNewGame(); // Reset the UI for a new game
     }
+
 }
