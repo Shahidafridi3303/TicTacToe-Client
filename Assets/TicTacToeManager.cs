@@ -8,7 +8,7 @@ public class TicTacToeManager : MonoBehaviour
 {
     [SerializeField] private Button[] buttons;
     [SerializeField] private Sprite xSprite, oSprite; // Assign in the Inspector
-    public TextMeshProUGUI turnText, resultText;
+    public TextMeshProUGUI turnText, observerText, resultText;
 
     private string roomName;
     private bool isPlayerTurn = false;
@@ -104,14 +104,14 @@ public class TicTacToeManager : MonoBehaviour
     {
         if (isObserver)
         {
-            turnText.text = "Observing game...";
+            turnText.text = "Observing game..."; // Maintain observer text
             return;
         }
 
+        Debug.Log($"Setting player turn: IsPlayerTurn = {isTurn}");
         isPlayerTurn = isTurn;
         UpdateTurnText();
     }
-
 
 
     public void ShowGameResult(int result)
@@ -141,17 +141,21 @@ public class TicTacToeManager : MonoBehaviour
 
     public void InitializeObserver(string room)
     {
-        isObserver = true; // Mark as observer
-        roomName = room; // Assign room name
+        roomName = room;
         Debug.Log($"Observer initialized for room: {roomName}");
-        turnText.text = "Observing game..."; // Update UI to indicate observer mode
 
-        // Disable interaction with game buttons for observers
+        turnText.gameObject.SetActive(false);
+        observerText.gameObject.SetActive(true);
+
+        // Set the observer-specific UI
         foreach (Button button in buttons)
         {
-            button.interactable = false;
+            button.interactable = false; // Disable interaction for observer
         }
+
+        isObserver = true; // Ensure observer flag is set (if you are using this flag)
     }
+
 
     public void UpdateBoardForObserver(string serializedBoardState)
     {
