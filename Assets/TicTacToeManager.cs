@@ -128,4 +128,15 @@ public class TicTacToeManager : MonoBehaviour
             loginManager.resultPanelMessage.text = resultText.text; // Show result
         }
     }
+
+    public void InitializeObserver(string room)
+    {
+        roomName = room;
+        turnText.text = "Observing the game...";
+        foreach (Button button in buttons)
+        {
+            button.interactable = false; // Disable interactions
+        }
+    }
+
 }

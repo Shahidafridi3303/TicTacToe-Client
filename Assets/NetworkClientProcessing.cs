@@ -178,6 +178,18 @@ static public class NetworkClientProcessing
                 chatManager.DisplayIncomingMessage(message);
             }
         }
+        else if (signifier == ServerToClientSignifiers.ObserverJoined)
+        {
+            string roomName = csv[1];
+            Debug.Log($"Joined room {roomName} as an observer.");
+
+            TicTacToeManager manager = Object.FindObjectOfType<TicTacToeManager>();
+            if (manager != null)
+            {
+                manager.InitializeObserver(roomName);
+            }
+        }
+
 
     }
 
@@ -264,6 +276,7 @@ public static class ServerToClientSignifiers
     public const int GameRoomCreatedOrJoined = 8;
     public const int StartGame = 9;
     public const int OpponentMessage = 10;
+    public const int ObserverJoined = 14; // New signifier for observers joining
 
     public const int PlayerMove = 11; // Sent when a player makes a move
     public const int GameResult = 12; // Sent when the game ends
