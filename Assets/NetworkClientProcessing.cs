@@ -286,6 +286,11 @@ static public class NetworkClientProcessing
         networkClient.Disconnect();
     }
 
+    static public void OnApplicationQuit()
+    {
+        DisconnectFromServer();
+    }
+
     #endregion
 
     #region Game Logic Management
