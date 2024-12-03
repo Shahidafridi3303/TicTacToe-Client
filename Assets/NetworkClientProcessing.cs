@@ -222,6 +222,30 @@ static public class NetworkClientProcessing
             }
         }
 
+        else if (signifier == ServerToClientSignifiers.GameRoomDestroyed)
+        {
+            Debug.Log("Received GameRoomDestroyed signal. Returning to GameRoom panel...");
+
+            // Find the LoginManager and reset the UI to GameRoomPanel
+            if (loginManager != null)
+            {
+                loginManager.SetUIState(UIState.GameRoomWaiting);
+                loginManager.roomStatusText.text = "A player left the room. Game has ended.";
+            }
+
+            // Reset TicTacToeManager if necessary
+            if (ticTacToeManager != null)
+            {
+                ticTacToeManager.StartNewGame();
+            }
+
+            // Reset ChatManager if necessary
+            ChatManager chatManager = UnityEngine.Object.FindObjectOfType<ChatManager>();
+            if (chatManager != null)
+            {
+                chatManager.ResetChat();
+            }
+        }
 
     }
 
@@ -315,4 +339,5 @@ public static class ServerToClientSignifiers
     public const int TurnUpdate = 13; // New signifier for turn updates
 
     public const int BoardStateUpdate = 15; // Sending board state to observer
+    public const int GameRoomDestroyed = 16; // New signifier for destroyed rooms
 }
