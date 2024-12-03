@@ -30,9 +30,7 @@ public class TicTacToeManager : MonoBehaviour
     public void StartNewGame()
     {
         roomName = ""; // Clear the previous room name
-        turnText.text = ""; // Reset TurnText for all roles
-        observerText.text = ""; // Reset ObserverText as well
-        observerText.gameObject.SetActive(false); // Deactivate observer text if necessary
+        turnText.text = "Waiting for opponent..."; // Reset turn indicator
         resultText.text = ""; // Clear the result text
         foreach (Button button in buttons)
         {
@@ -141,8 +139,7 @@ public class TicTacToeManager : MonoBehaviour
         roomName = room;
         Debug.Log($"Observer initialized for room: {roomName}");
 
-        turnText.text = "";
-        turnText.gameObject.SetActive(true);
+        turnText.gameObject.SetActive(false);
         observerText.gameObject.SetActive(true);
 
         // Update the GameRoomNameText
