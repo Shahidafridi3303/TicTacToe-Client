@@ -123,13 +123,6 @@ public class TicTacToeManager : MonoBehaviour
         else
             resultText.text = "It's a Draw!";
 
-        StartCoroutine(DisplayResultPanel(result));
-    }
-
-    private IEnumerator DisplayResultPanel(int result)
-    {
-        yield return new WaitForSeconds(1); // Wait for 1 second
-
         // Activate ResultPanel via LoginManager
         LoginManager loginManager = UnityEngine.Object.FindObjectOfType<LoginManager>();
         if (loginManager != null)
