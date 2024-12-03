@@ -165,8 +165,21 @@ static public class NetworkClientProcessing
         else if (signifier == ServerToClientSignifiers.GameResult)
         {
             int result = int.Parse(csv[1]);
-            ticTacToeManager.ShowGameResult(result);
+            Debug.Log($"Game result received: {result}");
+
+            if (ticTacToeManager != null)
+            {
+                ticTacToeManager.ShowGameResult(result); // Display result panel
+            }
+
+            // For observers
+            if (loginManager != null && result == 0)
+            {
+                loginManager.resultPanelMessage.text = "It's a Draw!";
+                loginManager.resultPanel.SetActive(true);
+            }
         }
+
 
         else if (signifier == ServerToClientSignifiers.OpponentMessage)
         {
