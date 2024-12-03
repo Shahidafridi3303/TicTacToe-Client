@@ -210,6 +210,13 @@ public class LoginManager : MonoBehaviour
         accountDropdown.value = 0; // Reset dropdown to the default option
     }
 
+    public void SetObserverUI(string roomName)
+    {
+        gameRoomPanel.SetActive(false); // Disable the GameRoom panel
+        ticTacToePanel.SetActive(true); // Show TicTacToe panel for observing
+        roomStatusText.text = $"Observing game in room: {roomName}"; // Update observer status
+    }
+
     public void OnAccountSelected(int index)
     {
         // Fetch the actual selected index directly from the dropdown

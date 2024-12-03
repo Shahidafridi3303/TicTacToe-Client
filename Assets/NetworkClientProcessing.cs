@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ static public class NetworkClientProcessing
         string[] csv = msg.Split(',');
         int signifier = int.Parse(csv[0]);
 
-        LoginManager loginManager = Object.FindObjectOfType<LoginManager>();
+        LoginManager loginManager = UnityEngine.Object.FindObjectOfType<LoginManager>();
 
         if (signifier == ServerToClientSignifiers.GameRoomCreatedOrJoined)
         {
@@ -45,7 +46,7 @@ static public class NetworkClientProcessing
             string message = csv[1];
             Debug.Log($"Message from opponent: {message}");
 
-            ChatManager chatManager = Object.FindObjectOfType<ChatManager>();
+            ChatManager chatManager = UnityEngine.Object.FindObjectOfType<ChatManager>();
             if (chatManager != null)
             {
                 chatManager.DisplayIncomingMessage(message);
@@ -148,7 +149,7 @@ static public class NetworkClientProcessing
 
             if (ticTacToeManager != null)
             {
-                ticTacToeManager.UpdateCell(x, y, player);
+                ticTacToeManager.UpdateCell(x, y, player); // Update UI for all clients (players and observers)
             }
         }
         else if (signifier == ServerToClientSignifiers.TurnUpdate)
@@ -172,7 +173,7 @@ static public class NetworkClientProcessing
             string message = csv[1];
             Debug.Log($"Message from opponent: {message}");
 
-            ChatManager chatManager = Object.FindObjectOfType<ChatManager>();
+            ChatManager chatManager = UnityEngine.Object.FindObjectOfType<ChatManager>();
             if (chatManager != null)
             {
                 chatManager.DisplayIncomingMessage(message);
@@ -183,10 +184,41 @@ static public class NetworkClientProcessing
             string roomName = csv[1];
             Debug.Log($"Joined room {roomName} as an observer.");
 
-            TicTacToeManager manager = Object.FindObjectOfType<TicTacToeManager>();
-            if (manager != null)
+            // Switch UI to TicTacToePanel for observer
+            if (loginManager != null)
             {
-                manager.InitializeObserver(roomName);
+                loginManager.SetUIState(UIState.GameRoomPlaying); // Show TicTacToePanel
+                loginManager.SetObserverUI(roomName); // Activate observer UI
+                Debug.Log("TicTacToe panel activated for observer.");
+            }
+
+            // Deactivate ChatManager panel
+            ChatManager chatManager = UnityEngine.Object.FindObjectOfType<ChatManager>();
+            if (chatManager != null)
+            {
+                chatManager.ResetChat(); // Clear and deactivate chat for observers
+                chatManager.gameObject.SetActive(false); // Deactivate panel
+            }
+
+            // Optionally, initialize observer-specific features in TicTacToeManager
+            TicTacToeManager ticTacToeManager = UnityEngine.Object.FindObjectOfType<TicTacToeManager>();
+            if (ticTacToeManager != null)
+            {
+                ticTacToeManager.InitializeObserver(roomName);
+            }
+        }
+
+        else if (signifier == ServerToClientSignifiers.BoardStateUpdate)
+        {
+            int x = int.Parse(csv[1]);
+            int y = int.Parse(csv[2]);
+            int playerMark = int.Parse(csv[3]);
+
+            Debug.Log($"Received board state: Player {playerMark} at ({x}, {y})");
+
+            if (ticTacToeManager != null)
+            {
+                ticTacToeManager.UpdateCell(x, y, playerMark);
             }
         }
 
@@ -281,4 +313,6 @@ public static class ServerToClientSignifiers
     public const int PlayerMove = 11; // Sent when a player makes a move
     public const int GameResult = 12; // Sent when the game ends
     public const int TurnUpdate = 13; // New signifier for turn updates
+
+    public const int BoardStateUpdate = 15; // Sending board state to observer
 }
