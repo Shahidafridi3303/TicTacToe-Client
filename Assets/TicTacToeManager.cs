@@ -86,6 +86,18 @@ public class TicTacToeManager : MonoBehaviour
         roomName = room; // Assign room name
         UpdateTurnText();
 
+        // Reset and activate ChatManager
+        ChatManager chatManager = FindObjectOfType<ChatManager>();
+        if (chatManager != null)
+        {
+            chatManager.ResetChat(); // Reset chat state
+            chatManager.SetChatActive(true); // Ensure chat is active
+        }
+        else
+        {
+            Debug.LogError("ChatManager instance not found in the scene.");
+        }
+
         if (isObserver)
         {
             turnText.text = "Observing game..."; // Observer sees this
@@ -232,6 +244,17 @@ public class TicTacToeManager : MonoBehaviour
         totalTimeElapsed = 0f; // Reset timer to zero
         UpdateTotalTimeText(); // Update UI to show 00:00
         isGameTimerRunning = true; // Start the timer
+
+        // Disable ChatManager for observers
+        ChatManager chatManager = UnityEngine.Object.FindObjectOfType<ChatManager>();
+        if (chatManager != null)
+        {
+            chatManager.SetChatActive(false); // Disable for observers
+        }
+        else
+        {
+            Debug.LogError("ChatManager instance not found for observer.");
+        }
     }
 
 
