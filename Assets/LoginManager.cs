@@ -207,7 +207,6 @@ public class LoginManager : MonoBehaviour
         Debug.Log("TicTacToe panel and ChatManager panel activated");
     }
 
-
     public void OnDeleteAccountButtonPressed()
     {
         int selectedIndex = accountDropdown.value;
@@ -220,10 +219,23 @@ public class LoginManager : MonoBehaviour
 
         string selectedAccount = accountDropdown.options[selectedIndex].text;
 
-        // Send delete request to the server
-        NetworkClientProcessing.SendMessageToServer($"3,{selectedAccount}", TransportPipeline.ReliableAndInOrder);
-        Debug.Log($"Delete request sent for account: {selectedAccount}");
+        // Use the local accountPasswordMap to retrieve the password
+        if (accountPasswordMap.TryGetValue(selectedAccount, out string selectedPassword))
+        {
+            // Send delete request to the server
+            NetworkClientProcessing.SendMessageToServer($"3,{selectedAccount},{selectedPassword}", TransportPipeline.ReliableAndInOrder);
+            ShowFeedback($"Delete request sent for account: {selectedAccount}");
+
+            // Remove the account locally to reflect the deletion immediately
+            accountPasswordMap.Remove(selectedAccount);
+            RefreshAccountDropdown(new List<string>(accountPasswordMap.Keys));
+        }
+        else
+        {
+            ShowFeedback($"Password for account '{selectedAccount}' not found. Cannot delete.");
+        }
     }
+
 
     public void RefreshAccountDropdown(List<string> accountNames)
     {

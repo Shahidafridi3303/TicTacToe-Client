@@ -87,14 +87,29 @@ static public class NetworkClientProcessing
         }
         else if (signifier == ServerToClientSignifiers.AccountDeleted)
         {
-            string deletedAccount = csv[1];
-            loginManager.ShowFeedback($"Account '{deletedAccount}' deleted successfully.");
+            if (csv.Length > 1)
+            {
+                string deletedAccount = csv[1];
+                loginManager.ShowFeedback($"Account '{deletedAccount}' deleted successfully.");
+            }
+            else
+            {
+                loginManager.ShowFeedback("Account deleted successfully, but no account name was provided.");
+            }
         }
         else if (signifier == ServerToClientSignifiers.AccountDeletionFailed)
         {
-            string failedAccount = csv[1];
-            loginManager.ShowFeedback($"Failed to delete account '{failedAccount}'.");
+            if (csv.Length > 1)
+            {
+                string failedAccount = csv[1];
+                loginManager.ShowFeedback($"Failed to delete account '{failedAccount}'.");
+            }
+            else
+            {
+                loginManager.ShowFeedback("Account deletion failed. No additional details provided.");
+            }
         }
+
         else if (signifier == ServerToClientSignifiers.AccountList)
         {
             Debug.Log($"Raw Account List Received: {msg}");
